@@ -1,23 +1,16 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
+import Layout from '@/components/Layout';
 
 const HERO_BG = 'https://cdn.poehali.dev/projects/5d746308-3b2e-4992-8271-18adbadc1a91/files/9cf87042-343d-4d97-9b94-29ff395b2103.jpg';
-
-const NAV = ['Генератор', 'Агенты', 'Библиотека', 'Интеграции', 'Настройки'];
 
 const GENERATORS = [
   { icon: 'Type', title: 'Текст', desc: 'Статьи, посты, сценарии и код за секунды', color: '220 100% 62%' },
   { icon: 'Image', title: 'Изображения', desc: 'Арты, концепты и фото в любом стиле', color: '270 95% 65%' },
   { icon: 'Clapperboard', title: 'Видео', desc: 'Ролики и анимация из текстового описания', color: '185 100% 55%' },
   { icon: 'AudioLines', title: 'Голос', desc: 'Озвучка и синтез речи на 40+ языках', color: '320 90% 65%' },
-];
-
-const AGENTS = [
-  { name: 'Аналитик', role: 'Бизнес-метрики и прогнозы', icon: 'TrendingUp', tasks: '12.4K' },
-  { name: 'Копирайтер', role: 'Тексты и контент-маркетинг', icon: 'PenLine', tasks: '8.7K' },
-  { name: 'Дизайнер', role: 'Визуалы и брендинг', icon: 'Palette', tasks: '6.1K' },
-  { name: 'Стратег', role: 'Планы и автоматизация', icon: 'Target', tasks: '4.9K' },
 ];
 
 const STATS = [
@@ -28,48 +21,11 @@ const STATS = [
 ];
 
 const Index = () => {
-  const [activeNav, setActiveNav] = useState('Генератор');
   const [prompt, setPrompt] = useState('');
+  const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden relative">
-      <div className="pointer-events-none fixed inset-0 z-0">
-        <div className="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-neon-purple/20 blur-[120px] animate-glow-pulse" />
-        <div className="absolute top-1/3 -right-40 w-[500px] h-[500px] rounded-full bg-neon-blue/20 blur-[120px] animate-glow-pulse" style={{ animationDelay: '1.5s' }} />
-        <div className="absolute inset-0 grid-bg opacity-[0.15]" />
-      </div>
-
-      <header className="sticky top-0 z-50 glass border-b border-border/60">
-        <div className="container flex items-center justify-between h-16">
-          <div className="flex items-center gap-2.5">
-            <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-neon-cyan via-neon-purple to-neon-blue flex items-center justify-center neon-border">
-              <Icon name="BrainCircuit" size={20} className="text-white" />
-            </div>
-            <span className="font-display font-semibold text-xl tracking-wide">
-              SUPER<span className="text-gradient">MIND</span>
-            </span>
-          </div>
-          <nav className="hidden md:flex items-center gap-1">
-            {NAV.map((item) => (
-              <button
-                key={item}
-                onClick={() => setActiveNav(item)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                  activeNav === item
-                    ? 'text-foreground bg-secondary'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                {item}
-              </button>
-            ))}
-          </nav>
-          <Button className="bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90 text-white font-semibold rounded-lg">
-            Войти
-          </Button>
-        </div>
-      </header>
-
+    <Layout>
       <section className="relative z-10 container pt-20 pb-28 text-center">
         <img
           src={HERO_BG}
@@ -131,29 +87,6 @@ const Index = () => {
       </section>
 
       <section className="relative z-10 container pb-28">
-        <div className="text-center mb-12">
-          <span className="font-mono text-sm text-neon-cyan">// АГЕНТЫ</span>
-          <h2 className="font-display font-bold text-4xl md:text-5xl mt-3">
-            Команда AI, работающая на вас
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-          {AGENTS.map((a) => (
-            <div key={a.name} className="glass rounded-2xl p-6 hover:neon-border transition-all duration-300 group">
-              <div className="flex items-start justify-between mb-6">
-                <div className="w-11 h-11 rounded-xl bg-secondary flex items-center justify-center group-hover:bg-neon-purple/20 transition-colors">
-                  <Icon name={a.icon} size={22} className="text-neon-purple" />
-                </div>
-                <span className="font-mono text-xs text-muted-foreground">{a.tasks} задач</span>
-              </div>
-              <h3 className="font-display font-semibold text-lg mb-1">{a.name}</h3>
-              <p className="text-sm text-muted-foreground">{a.role}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="relative z-10 container pb-28">
         <div className="glass rounded-3xl p-8 md:p-12 grid lg:grid-cols-2 gap-10 items-center overflow-hidden">
           <div>
             <span className="font-mono text-sm text-neon-cyan">// ПУБЛИЧНЫЙ API</span>
@@ -164,13 +97,10 @@ const Index = () => {
               Единый REST API для всех генераторов и агентов. Простая авторизация по ключу,
               понятная документация и SDK для популярных языков.
             </p>
-            <div className="flex flex-wrap gap-3">
-              {['REST', 'Webhooks', 'Python SDK', 'JS SDK', 'OAuth 2.0'].map((t) => (
-                <span key={t} className="px-3 py-1.5 rounded-lg bg-secondary text-sm font-mono text-foreground/80">
-                  {t}
-                </span>
-              ))}
-            </div>
+            <Button onClick={() => navigate('/integrations')} className="bg-gradient-to-r from-neon-purple to-neon-blue hover:opacity-90 text-white font-semibold rounded-lg">
+              К интеграциям
+              <Icon name="ArrowRight" size={18} className="ml-1" />
+            </Button>
           </div>
           <div className="rounded-2xl bg-[#0a0a14] border border-border p-5 font-mono text-sm overflow-x-auto glow-blue">
             <div className="flex gap-1.5 mb-4">
@@ -203,19 +133,7 @@ const Index = () => {
           ))}
         </div>
       </section>
-
-      <footer className="relative z-10 border-t border-border/60">
-        <div className="container py-10 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-neon-cyan via-neon-purple to-neon-blue flex items-center justify-center">
-              <Icon name="BrainCircuit" size={16} className="text-white" />
-            </div>
-            <span className="font-display font-semibold tracking-wide">SUPERMIND AI</span>
-          </div>
-          <p className="text-sm text-muted-foreground">© 2026 SuperMind AI. Создано для будущего.</p>
-        </div>
-      </footer>
-    </div>
+    </Layout>
   );
 };
 
